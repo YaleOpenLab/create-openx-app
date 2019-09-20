@@ -1,10 +1,6 @@
 .DS_Store
-teller/teller
-opensolar
 server.crt
 server.key
 config.yaml
-watcher/watcher
-config.yaml
 legal/legal
-teller/mqtt/mqtt
+platform
