@@ -30,8 +30,6 @@ func testSolarProject(index int, panelsize string, totalValue float64, location 
 	project.DateInitiated = utils.Timestamp()
 	project.EstimatedAcquisition = years
 	project.RecipientIndex = recpIndex
-	project.ContractorIndex = contractor.U.Index
-	project.OriginatorIndex = originator.U.Index
 	project.Stage = stage
 	project.PaybackPeriod = pbperiod
 	project.AuctionType = auctionType
@@ -70,12 +68,12 @@ func Testnet() error {
 			return err
 		}
 
-		originator, err := core.NewOriginator("samuel", "p", "x", "SamuelOriginator", "ABC Street, London", "I am an originator")
+		originator, err := core.NewEntity("samuel", "p", "x", "SamuelOriginator", "ABC Street, London", "I am an originator")
 		if err != nil {
 			return err
 		}
 
-		contractor, err := core.NewContractor("sam", "p", "x", "SamuelContractor", "14 ABC Street London", "This is a competing contractor")
+		contractor, err := core.NewEntity("sam", "p", "x", "SamuelContractor", "14 ABC Street London", "This is a competing contractor")
 		if err != nil {
 			return err
 		}

@@ -20,19 +20,7 @@ import (
 
 // VerifyBeforeAuthorizing verifies information on the originator before upgrading the project stage
 func VerifyBeforeAuthorizing(projIndex int) bool {
-	project, err := RetrieveProject(projIndex)
-	if err != nil {
-		return false
-	}
-	originator, err := RetrieveEntity(project.OriginatorIndex)
-	if err != nil {
-		return false
-	}
-	log.Println("ORIGINATOR'S NAME IS:", originator.U.Name, " and PROJECT's METADATA IS: ", project.Metadata)
-	if originator.U.Kyc && !originator.U.Banned {
-		return true
-	}
-	return false
+	return true
 }
 
 // RecipientAuthorize allows a recipient to authorize a specific project
@@ -58,11 +46,6 @@ func RecipientAuthorize(projIndex int, recpIndex int) error {
 	err = project.SetStage(1) // set the project as originated
 	if err != nil {
 		return errors.Wrap(err, "Error while setting origin project")
-	}
-
-	err = RepOriginatedProject(project.OriginatorIndex, project.Index)
-	if err != nil {
-		return errors.Wrap(err, "error while increasing reputation of originator")
 	}
 
 	return nil
@@ -588,12 +571,6 @@ func monitorPaybacks(recpIndex int, projIndex int) {
 			time.Sleep(consts.OneWeekInSecond)
 		}
 
-		guarantor, err := RetrieveEntity(project.GuarantorIndex)
-		if err != nil {
-			log.Println("couldn't retrieve guarantor")
-			time.Sleep(consts.OneWeekInSecond)
-		}
-
 		period := float64(time.Duration(project.PaybackPeriod) * consts.OneWeekInSecond) // in seconds due to the const
 		if period == 0 {
 			period = 1 // for the test suite
@@ -625,7 +602,6 @@ func monitorPaybacks(recpIndex int, projIndex int) {
 					notif.SendSternPaybackAlertEmailI(projIndex, investor.U.Email)
 				}
 			}
-			notif.SendSternPaybackAlertEmailG(projIndex, guarantor.U.Email)
 			time.Sleep(consts.OneWeekInSecond)
 		} else if factor >= DisconnectionThreshold {
 			// send a disconnection notice to the recipient and let them know we have redirected
@@ -641,14 +617,6 @@ func monitorPaybacks(recpIndex int, projIndex int) {
 				if investor.U.Notification {
 					notif.SendDisconnectionEmailI(projIndex, investor.U.Email)
 				}
-			}
-			// we have sent out emails to investors, send an email to the guarantor and cover first losses of investors
-			notif.SendDisconnectionEmailG(projIndex, guarantor.U.Email)
-			err = CoverFirstLoss(project.Index, guarantor.U.Index, project.AmountOwed)
-			if err != nil {
-				log.Println(err)
-				time.Sleep(consts.OneWeekInSecond)
-				continue
 			}
 		}
 
@@ -667,50 +635,4 @@ func addWaterfallAccount(projIndex int, pubkey string, amount float64) error {
 	}
 	project.WaterfallMap[pubkey] = amount
 	return project.Save()
-}
-
-// CoverFirstLoss covers first loss for investors by sending funds from the guarantor's account
-func CoverFirstLoss(projIndex int, entityIndex int, amount float64) error {
-	// cover first loss for the project specified
-	project, err := RetrieveProject(projIndex)
-	if err != nil {
-		return errors.Wrap(err, "could not retrieve projects from database, quitting")
-	}
-
-	entity, err := RetrieveEntity(entityIndex)
-	if err != nil {
-		return errors.Wrap(err, "could not retrieve entity from database, quitting")
-	}
-
-	if project.GuarantorIndex != entity.U.Index {
-		return errors.New("guarantor index does not match with entity's index in database")
-	}
-
-	if entity.FirstLossGuaranteeAmt < amount {
-		log.Println("amount required greater than what guarantor agreed to provide, adjusting first loss to cover for what's available")
-		amount = entity.FirstLossGuaranteeAmt
-	}
-	// we now need to send funds from the gurantor's account to the escrow
-	seed, err := wallet.DecryptSeed(entity.U.StellarWallet.EncryptedSeed, entity.FirstLossGuarantee) //
-	if err != nil {
-		return errors.Wrap(err, "could not decrypt seed, quitting!")
-	}
-
-	var txhash string
-	// we have the escrow's pubkey, transfer funds to the escrow
-	if !consts.Mainnet {
-		_, txhash, err = assets.SendAsset(consts.StablecoinCode, consts.StablecoinPublicKey, project.EscrowPubkey, amount, seed, "first loss guarantee")
-		if err != nil {
-			return errors.Wrap(err, "could not transfer asset to escrow, quitting")
-		}
-	} else {
-		_, txhash, err = assets.SendAsset(consts.AnchorUSDCode, consts.AnchorUSDAddress, project.EscrowPubkey, amount, seed, "first loss guarantee")
-		if err != nil {
-			return errors.Wrap(err, "could not transfer asset to escrow, quitting")
-		}
-	}
-
-	log.Println("txhash of guarantor kick in:", txhash)
-
-	return nil
 }

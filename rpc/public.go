@@ -24,13 +24,13 @@ var PublicRpc = map[int][]string{
 
 // SnInvestor defines a sanitized investor
 type SnInvestor struct {
-	Name                  string
-	InvestedSolarProjects []string
-	AmountInvested        float64
-	InvestedBonds         []string
-	InvestedCoops         []string
-	PublicKey             string
-	Reputation            float64
+	Name             string
+	InvestedProjects []string
+	AmountInvested   float64
+	InvestedBonds    []string
+	InvestedCoops    []string
+	PublicKey        string
+	Reputation       float64
 }
 
 // SnRecipient defines a sanitized recipient
@@ -52,7 +52,7 @@ type SnUser struct {
 func sanitizeInvestor(investor core.Investor) SnInvestor {
 	var sanitize SnInvestor
 	sanitize.Name = investor.U.Name
-	sanitize.InvestedSolarProjects = investor.InvestedSolarProjects
+	sanitize.InvestedProjects = investor.InvestedProjects
 	sanitize.AmountInvested = investor.AmountInvested
 	sanitize.PublicKey = investor.U.StellarWallet.PublicKey
 	sanitize.Reputation = investor.U.Reputation

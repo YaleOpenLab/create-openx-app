@@ -71,7 +71,7 @@ func validateEntity() {
 	})
 }
 
-// getStage0Contracts gets a list of all the pre origianted contracts on the platform
+// getStage0Contracts gets a list of all the pre originated contracts on the platform
 func getStage0Contracts() {
 	http.HandleFunc(EntityRpc[2][0], func(w http.ResponseWriter, r *http.Request) {
 		err := erpc.CheckGet(w, r)
@@ -79,14 +79,14 @@ func getStage0Contracts() {
 			log.Println(err)
 			return
 		}
-		prepEntity, err := EntityValidateHelper(w, r)
+		_, err = EntityValidateHelper(w, r)
 		if err != nil {
 			log.Println("Error while validating entity", err)
 			erpc.ResponseHandler(w, erpc.StatusUnauthorized)
 			return
 		}
 
-		x, err := core.RetrieveOriginatorProjects(core.Stage0.Number, prepEntity.U.Index)
+		x, err := core.RetrieveProjectsAtStage(core.Stage0.Number)
 		if err != nil {
 			log.Println("Error while retrieving originator project", err)
 			erpc.ResponseHandler(w, erpc.StatusInternalServerError)
@@ -104,14 +104,14 @@ func getStage1Contracts() {
 			log.Println(err)
 			return
 		}
-		prepEntity, err := EntityValidateHelper(w, r)
+		_, err = EntityValidateHelper(w, r)
 		if err != nil {
 			log.Println("Error while validating entity", err)
 			erpc.ResponseHandler(w, erpc.StatusUnauthorized)
 			return
 		}
 
-		x, err := core.RetrieveOriginatorProjects(core.Stage1.Number, prepEntity.U.Index)
+		x, err := core.RetrieveProjectsAtStage(core.Stage1.Number)
 		if err != nil {
 			log.Println("Error while retrieving originator projects", err)
 			erpc.ResponseHandler(w, erpc.StatusInternalServerError)
@@ -129,14 +129,14 @@ func getStage2Contracts() {
 			log.Println(err)
 			return
 		}
-		prepEntity, err := EntityValidateHelper(w, r)
+		_, err = EntityValidateHelper(w, r)
 		if err != nil {
 			log.Println("Error while validating entity", err)
 			erpc.ResponseHandler(w, erpc.StatusUnauthorized)
 			return
 		}
 
-		x, err := core.RetrieveContractorProjects(core.Stage2.Number, prepEntity.U.Index)
+		x, err := core.RetrieveProjectsAtStage(core.Stage2.Number)
 		if err != nil {
 			log.Println("Error while retrieving contractor projects", err)
 			erpc.ResponseHandler(w, erpc.StatusInternalServerError)

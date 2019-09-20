@@ -56,23 +56,11 @@ func Mainnet() error {
 			return err
 		}
 
-		orig, err := core.NewOriginator("martin", "p", "x", "MartinWainstein", "California", "Project Originator")
-		if err != nil {
-			return err
-		}
-
-		contractor, err := core.NewContractor("samuel", "p", "x", "SamuelVisscher", "Georgia", "Project Contractor")
-		if err != nil {
-			return err
-		}
-
 		var project core.Project
 		project.Index = 1
 		project.TotalValue = 5 // 5USD for testing
 		// project.Name = "SU Pasto School, Aibonito"
 		project.Metadata = "MIT/Yale Pilot 2"
-		project.OriginatorIndex = orig.U.Index
-		project.ContractorIndex = contractor.U.Index
 		project.EstimatedAcquisition = 5
 		project.Stage = 4
 		project.MoneyRaised = 0
@@ -84,8 +72,6 @@ func Mainnet() error {
 
 		log.Println("Please seed DCI pubkey: ", inv.U.StellarWallet.PublicKey, " with funds")
 		log.Println("Please seed Varunram's pubkey: ", recp.U.StellarWallet.PublicKey, " with funds")
-		log.Println("Please seed Martin's pubkey: ", orig.U.StellarWallet.PublicKey, " with funds")
-		log.Println("Please seed Samuel's pubkey: ", contractor.U.StellarWallet.PublicKey, " with funds")
 	}
 	return nil
 }

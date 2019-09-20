@@ -24,29 +24,17 @@ type Investor struct {
 	// AmountInvested is the total amount invested by the investor
 	AmountInvested float64
 
-	// InvestedSolarProjects is a list of the investor assets of the opensolar projects the investor has invested in
-	InvestedSolarProjects []string
+	// InvestedProjects is a list of the investor assets of the opensolar projects the investor has invested in
+	InvestedProjects []string
 
-	// InvestedSolarProjectsIndices is an integer list of the projects the investor has invested in
-	InvestedSolarProjectsIndices []int
+	// InvestedProjectsIndices is an integer list of the projects the investor has invested in
+	InvestedProjectsIndices []int
 
-	// InvestedSolarProjects is a list of the investor assets of the opensolar projects the investor has invested in
-	SeedInvestedSolarProjects []string
+	// InvestedProjects is a list of the investor assets of the opensolar projects the investor has invested in
+	SeedInvestedProjects []string
 
-	// InvestedSolarProjectsIndices is an integer list of the projects the investor has invested in
-	SeedInvestedSolarProjectsIndices []int
-
-	// WeightedROI is the weighted ROI that the investor is expected to get for his investments
-	WeightedROI string
-
-	// AllTimeReturns is the all time returns the investor has realized from his investments
-	AllTimeReturns []float64
-
-	// ReceivedRECs is a list of the RECs the recipient has invested in
-	ReceivedRECs string
-
-	// Prorata is the pro rata in all the projects that the investor has invested in
-	Prorata string
+	// InvestedProjectsIndices is an integer list of the projects the investor has invested in
+	SeedInvestedProjectsIndices []int
 }
 
 // NewInvestor creates a new investor based on params passed
@@ -61,17 +49,6 @@ func NewInvestor(uname string, pwd string, seedpwd string, Name string) (Investo
 	a.AmountInvested = -1.0
 	err = a.Save()
 	return a, err
-}
-
-// ChangeVotingBalance changes the voting balance of a user
-func (a *Investor) ChangeVotingBalance(votes float64) error {
-	// this function is caled when we want to refund the user with the votes once
-	// an order has been finalized.
-	a.VotingBalance += votes
-	if a.VotingBalance < 0 {
-		a.VotingBalance = 0 // to ensure no one has negative votes or something
-	}
-	return a.Save()
 }
 
 // CanInvest checks whether an investor has the required funds to invest in a project

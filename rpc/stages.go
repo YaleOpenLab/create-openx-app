@@ -35,7 +35,7 @@ func returnAllStages() {
 
 		var arr []core.Stage
 		arr = append(arr, core.Stage0, core.Stage1, core.Stage2, core.Stage3, core.Stage4,
-			core.Stage5, core.Stage6, core.Stage7, core.Stage8, core.Stage9)
+			core.Stage5, core.Stage6, core.Stage7)
 
 		erpc.MarshalSend(w, arr)
 	})
@@ -81,10 +81,6 @@ func returnSpecificStage() {
 			x = core.Stage6
 		case 7:
 			x = core.Stage7
-		case 8:
-			x = core.Stage8
-		case 9:
-			x = core.Stage9
 		default:
 			// default is stage0, so we don't have a case defined for it above
 			x = core.Stage0

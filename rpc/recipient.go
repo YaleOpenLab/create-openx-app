@@ -19,9 +19,6 @@ func setupRecipientRPCs() {
 	validateRecipient()
 	getAllRecipients()
 	payback()
-	storeDeviceId()
-	storeStartTime()
-	storeDeviceLocation()
 	chooseBlindAuction()
 	chooseVickreyAuction()
 	chooseTimeAuction()
@@ -30,29 +27,24 @@ func setupRecipientRPCs() {
 	finalizeProject()
 	originateProject()
 	calculateTrustLimit()
-	storeStateHash()
 	setOneTimeUnlock()
 }
 
 // RecpRPC is a collection of all recipient RPC endpoints and their required params
 var RecpRPC = map[int][]string{
-	1:  []string{"/recipient/all"},                                                      // GET
-	2:  []string{"/recipient/register"},                                                 // POST
-	3:  []string{"/recipient/validate"},                                                 // GET
-	4:  []string{"/recipient/payback", "assetName", "amount", "seedpwd", "projIndex"},   // POST
-	5:  []string{"/recipient/deviceId", "deviceId"},                                     // POST
-	6:  []string{"/recipient/startdevice", "start"},                                     // POST
-	7:  []string{"/recipient/storelocation", "location"},                                // POST
-	8:  []string{"/recipient/auction/choose/blind"},                                     // GET
-	9:  []string{"/recipient/auction/choose/vickrey"},                                   // GET
-	10: []string{"/recipient/auction/choose/time"},                                      // GET
-	11: []string{"/recipient/unlock/opensolar", "seedpwd", "projIndex"},                 // POST
-	12: []string{"/recipient/addemail", "email"},                                        // POST
-	13: []string{"/recipient/finalize", "projIndex"},                                    // POST
-	14: []string{"/recipient/originate", "projIndex"},                                   // POST
-	15: []string{"/recipient/trustlimit", "assetName"},                                  // GET
-	16: []string{"/recipient/ssh", "hash"},                                              // POST
-	17: []string{"/recipient/onetimeunlock", "projIndex", "seedpwd"},                    // POST
+	1:  []string{"/recipient/all"},                                                    // GET
+	2:  []string{"/recipient/register"},                                               // POST
+	3:  []string{"/recipient/validate"},                                               // GET
+	4:  []string{"/recipient/payback", "assetName", "amount", "seedpwd", "projIndex"}, // POST
+	8:  []string{"/recipient/auction/choose/blind"},                                   // GET
+	9:  []string{"/recipient/auction/choose/vickrey"},                                 // GET
+	10: []string{"/recipient/auction/choose/time"},                                    // GET
+	11: []string{"/recipient/unlock/opensolar", "seedpwd", "projIndex"},               // POST
+	12: []string{"/recipient/addemail", "email"},                                      // POST
+	13: []string{"/recipient/finalize", "projIndex"},                                  // POST
+	14: []string{"/recipient/originate", "projIndex"},                                 // POST
+	15: []string{"/recipient/trustlimit", "assetName"},                                // GET
+	17: []string{"/recipient/onetimeunlock", "projIndex", "seedpwd"},                  // POST
 }
 
 // recpValidateHelper is a helper that helps validates recipients in routes
@@ -232,90 +224,6 @@ func payback() {
 		err = core.Payback(recpIndex, projIndex, assetName, amount, recipientSeed)
 		if err != nil {
 			log.Println("did not payback", err)
-			erpc.ResponseHandler(w, erpc.StatusInternalServerError)
-			return
-		}
-		erpc.ResponseHandler(w, erpc.StatusOK)
-	})
-}
-
-// storeDeviceId stores the recipient's device id from the teller. Called by the teller
-func storeDeviceId() {
-	http.HandleFunc(RecpRPC[5][0], func(w http.ResponseWriter, r *http.Request) {
-		// first validate the recipient or anyone would be able to set device ids
-		err := erpc.CheckPost(w, r)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		prepRecipient, err := recpValidateHelper(w, r, RecpRPC[5][1:])
-		if err != nil {
-			return
-		}
-
-		deviceId := r.FormValue("deviceId")
-		// we have the recipient ready. Now set the device id
-		prepRecipient.DeviceId = deviceId
-		err = prepRecipient.Save()
-		if err != nil {
-			log.Println("did not save recipient", err)
-			erpc.ResponseHandler(w, erpc.StatusInternalServerError)
-			return
-		}
-		erpc.ResponseHandler(w, erpc.StatusOK)
-	})
-}
-
-// storeStartTime stores the start time of the remote device installed as part of an
-// invested project. Called by the teller
-func storeStartTime() {
-	http.HandleFunc(RecpRPC[6][0], func(w http.ResponseWriter, r *http.Request) {
-		err := erpc.CheckPost(w, r)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		prepRecipient, err := recpValidateHelper(w, r, RecpRPC[6][1:])
-		if err != nil {
-			log.Println("COULDN'T VALIDATE THIS GUY")
-			return
-		}
-
-		start := r.FormValue("start")
-
-		prepRecipient.DeviceStarts = append(prepRecipient.DeviceStarts, start)
-		err = prepRecipient.Save()
-		if err != nil {
-			log.Println("did not save recipient", err)
-			erpc.ResponseHandler(w, erpc.StatusInternalServerError)
-			return
-		}
-		erpc.ResponseHandler(w, erpc.StatusOK)
-	})
-}
-
-// storeDeviceLocation stores the location of the remote device when it starts up. Called by the teller
-func storeDeviceLocation() {
-	http.HandleFunc(RecpRPC[7][0], func(w http.ResponseWriter, r *http.Request) {
-		err := erpc.CheckPost(w, r)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		prepRecipient, err := recpValidateHelper(w, r, RecpRPC[7][1:])
-		if err != nil {
-			return
-		}
-
-		location := r.FormValue("location")
-
-		prepRecipient.DeviceLocation = location
-		err = prepRecipient.Save()
-		if err != nil {
-			log.Println("did not save recipient", err)
 			erpc.ResponseHandler(w, erpc.StatusInternalServerError)
 			return
 		}
@@ -602,35 +510,6 @@ func calculateTrustLimit() {
 		}
 
 		erpc.MarshalSend(w, trustLimit)
-	})
-}
-
-// storeStateHash stores the start time of the remote device installed as part of an invested project.
-// Called by the teller
-func storeStateHash() {
-	http.HandleFunc(RecpRPC[16][0], func(w http.ResponseWriter, r *http.Request) {
-		err := erpc.CheckPost(w, r)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		// first validate the recipient or anyone would be able to set device ids
-		prepRecipient, err := recpValidateHelper(w, r, RecpRPC[16][1:])
-		if err != nil {
-			return
-		}
-
-		hash := r.FormValue("hash")
-
-		prepRecipient.StateHashes = append(prepRecipient.StateHashes, hash)
-		err = prepRecipient.Save()
-		if err != nil {
-			log.Println("did not save recipient", err)
-			erpc.ResponseHandler(w, erpc.StatusInternalServerError)
-			return
-		}
-		erpc.ResponseHandler(w, erpc.StatusOK)
 	})
 }
 

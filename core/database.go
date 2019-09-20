@@ -18,14 +18,14 @@ var RecipientBucket = []byte("Recipients")
 // ProjectsBucket is the project bucket
 var ProjectsBucket = []byte("Projects")
 
-// ContractorBucket is the contractor bucket
-var ContractorBucket = []byte("Contractors")
+// EntityBucket is the contractor bucket
+var EntityBucket = []byte("Contractors")
 
 // CreateHomeDir creates a home directory
 func CreateHomeDir() {
 	edb.CreateDirs(consts.HomeDir, consts.DbDir, consts.OpenSolarIssuerDir)
 	log.Println("creating db at: ", consts.DbDir+consts.DbName)
-	db, err := edb.CreateDB(consts.DbDir+consts.DbName, ProjectsBucket, InvestorBucket, RecipientBucket, ContractorBucket)
+	db, err := edb.CreateDB(consts.DbDir+consts.DbName, ProjectsBucket, InvestorBucket, RecipientBucket, EntityBucket)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -19,48 +19,14 @@ import (
 type Entity struct {
 	// U is the base User class inherited from openx
 	U *openx.User
-
-	// Contractor is a bool that is set if the entity is a contractor
-	Contractor bool
-
-	// Developer is a bool that is set if the entity is a developer
-	Developer bool
-
-	// Originator is a bool that is set if the entity is a originator
-	Originator bool
-
-	// Guarantor is a bool that is set if the entity is a guarantor
-	Guarantor bool
-
-	// PastContracts contains a list of all past contracts associated with the entity
-	PastContracts []Project
-
-	// ProposedContracts contains a list of all proposed contracts associated with the entity
-	ProposedContracts []Project
-
-	// PresentContracts contains a list of all present contracts associated with the entity
-	PresentContracts []Project
-
-	// PastFeedback contains a list of all feedback on the given entity
-	PastFeedback []Feedback
-
-	// Collateral is the amount the entity is willing to put up as collateral to secure projects
-	Collateral float64
-
-	// CollateralData contains data on the collateral amount that the entity is willing to pledge
-	CollateralData []string
-
-	// FirstLossGuarantee is the seed that will be used to transfer funds to investors in case the recipient refuses to pay
-	FirstLossGuarantee string
-
-	// 	FirstLossGuaranteeAmt is the amount that the guarantor is expected to cover in the case of a breach
-	FirstLossGuaranteeAmt float64
+	// EntityType can be used to define different entities in the system
+	EntityType bool
 }
 
 // RetrieveAllEntitiesWithoutRole retrieves all the entities from the database
 func RetrieveAllEntitiesWithoutRole() ([]Entity, error) {
 	var users []Entity
-	x, err := edb.RetrieveAllKeys(consts.DbDir+consts.DbName, ContractorBucket)
+	x, err := edb.RetrieveAllKeys(consts.DbDir+consts.DbName, EntityBucket)
 	if err != nil {
 		return users, errors.Wrap(err, "error while retrieving all keys")
 	}
@@ -81,7 +47,7 @@ func RetrieveAllEntitiesWithoutRole() ([]Entity, error) {
 func RetrieveAllEntities(role string) ([]Entity, error) {
 	var entities []Entity
 
-	x, err := edb.RetrieveAllKeys(consts.DbDir+consts.DbName, ContractorBucket)
+	x, err := edb.RetrieveAllKeys(consts.DbDir+consts.DbName, EntityBucket)
 	if err != nil {
 		return entities, errors.Wrap(err, "error while retrieving all keys")
 	}
@@ -92,12 +58,7 @@ func RetrieveAllEntities(role string) ([]Entity, error) {
 		if err != nil {
 			return entities, errors.New("could not unmarshal entity")
 		}
-		if entity.Contractor && role == "contractor" ||
-			entity.Originator && role == "originator" ||
-			entity.Guarantor && role == "guarantor" ||
-			entity.Developer && role == "developer" {
-			entities = append(entities, entity)
-		}
+		entities = append(entities, entity)
 	}
 
 	return entities, nil
@@ -106,7 +67,7 @@ func RetrieveAllEntities(role string) ([]Entity, error) {
 // RetrieveEntityHelper is a helper associated with the RetrieveEntity function
 func RetrieveEntityHelper(key int) (Entity, error) {
 	var entity Entity
-	x, err := edb.Retrieve(consts.DbDir+consts.DbName, ContractorBucket, key)
+	x, err := edb.Retrieve(consts.DbDir+consts.DbName, EntityBucket, key)
 	if err != nil {
 		return entity, errors.Wrap(err, "error while retrieving key from bucket")
 	}
@@ -150,15 +111,8 @@ func newEntity(uname string, pwd string, seedpwd string, Name string, Address st
 	}
 
 	switch role {
-	case "contractor":
-		a.Contractor = true
-	case "developer":
-		a.Developer = true
-	case "originator":
-		a.Originator = true
-	case "guarantor":
-		a.Guarantor = true
-	default:
+	case "entity":
+		a.EntityType = true
 		return a, errors.New("invalid entity type passed!")
 	}
 

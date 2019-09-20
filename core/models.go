@@ -68,11 +68,11 @@ func MunibondInvest(issuerPath string, invIndex int, invSeed string, invAmount f
 	investor.AmountInvested += invAmount
 
 	if seed {
-		investor.SeedInvestedSolarProjects = append(investor.InvestedSolarProjects, InvestorAsset.GetCode())
-		investor.SeedInvestedSolarProjectsIndices = append(investor.InvestedSolarProjectsIndices, projIndex)
+		investor.SeedInvestedProjects = append(investor.InvestedProjects, InvestorAsset.GetCode())
+		investor.SeedInvestedProjectsIndices = append(investor.InvestedProjectsIndices, projIndex)
 	} else {
-		investor.InvestedSolarProjects = append(investor.InvestedSolarProjects, InvestorAsset.GetCode())
-		investor.InvestedSolarProjectsIndices = append(investor.InvestedSolarProjectsIndices, projIndex)
+		investor.InvestedProjects = append(investor.InvestedProjects, InvestorAsset.GetCode())
+		investor.InvestedProjectsIndices = append(investor.InvestedProjectsIndices, projIndex)
 	}
 
 	err = investor.Save()

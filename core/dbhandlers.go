@@ -9,28 +9,10 @@ import (
 	consts "github.com/test/blah/consts"
 )
 
-// NewOriginator creates a new originator
-func NewOriginator(uname string, pwd string, seedpwd string, Name string,
+// NewEntity creates a new entity
+func NewEntity(uname string, pwd string, seedpwd string, Name string,
 	Address string, Description string) (Entity, error) {
-	return newEntity(uname, pwd, seedpwd, Name, Address, Description, "originator")
-}
-
-// NewDeveloper creates a new developer
-func NewDeveloper(uname string, pwd string, seedpwd string, Name string,
-	Address string, Description string) (Entity, error) {
-	return newEntity(uname, pwd, seedpwd, Name, Address, Description, "developer")
-}
-
-// NewGuarantor returns a new guarantor
-func NewGuarantor(uname string, pwd string, seedpwd string, Name string,
-	Address string, Description string) (Entity, error) {
-	return newEntity(uname, pwd, seedpwd, Name, Address, Description, "guarantor")
-}
-
-// NewContractor creates a new contractor
-func NewContractor(uname string, pwd string, seedpwd string, Name string,
-	Address string, Description string) (Entity, error) {
-	return newEntity(uname, pwd, seedpwd, Name, Address, Description, "contractor")
+	return newEntity(uname, pwd, seedpwd, Name, Address, Description, "entity")
 }
 
 // Save saves a Project's details
@@ -50,7 +32,7 @@ func (a *Recipient) Save() error {
 
 // Save saves an Entity's details
 func (a *Entity) Save() error {
-	return edb.Save(consts.DbDir+consts.DbName, ContractorBucket, a, a.U.Index)
+	return edb.Save(consts.DbDir+consts.DbName, EntityBucket, a, a.U.Index)
 }
 
 // RetrieveInvestor retrieves an investor from the database
@@ -252,48 +234,6 @@ func RetrieveProjectsAtStage(stage int) ([]Project, error) {
 	return arr, nil
 }
 
-// RetrieveContractorProjects retrieves projects that are associated with a specific contractor from the db
-func RetrieveContractorProjects(stage int, index int) ([]Project, error) {
-	var arr []Project
-	if stage > 9 { // check for this and fail early instead of wasting compute time on this
-		return arr, errors.Wrap(errors.New("stage can not be greater than 9, quitting!"), "stage can not be greater than 9, quitting!")
-	}
-
-	projects, err := RetrieveAllProjects()
-	if err != nil {
-		return arr, err
-	}
-
-	for _, project := range projects {
-		if project.Stage == stage && project.ContractorIndex == index {
-			arr = append(arr, project)
-		}
-	}
-
-	return arr, nil
-}
-
-// RetrieveOriginatorProjects retrieves projects that are associated with a specific originator from the db
-func RetrieveOriginatorProjects(stage int, index int) ([]Project, error) {
-	var arr []Project
-	if stage > 9 { // check for this and fail early instead of wasting compute time on this
-		return arr, errors.Wrap(errors.New("stage can not be greater than 9, quitting!"), "stage can not be greater than 9, quitting!")
-	}
-
-	projects, err := RetrieveAllProjects()
-	if err != nil {
-		return arr, err
-	}
-
-	for _, project := range projects {
-		if project.Stage == stage && project.OriginatorIndex == index {
-			arr = append(arr, project)
-		}
-	}
-
-	return arr, nil
-}
-
 // RetrieveRecipientProjects retrieves projects that are associated with a specific recipient from the db
 func RetrieveRecipientProjects(stage int, index int) ([]Project, error) {
 	var arr []Project
@@ -331,16 +271,6 @@ func RetrieveLockedProjects() ([]Project, error) {
 	}
 
 	return arr, nil
-}
-
-// SaveOriginatorMoU saves the MoU's hash in the database
-func SaveOriginatorMoU(projIndex int, hash string) error {
-	a, err := RetrieveProject(projIndex)
-	if err != nil {
-		return errors.Wrap(err, "couldn't retrieve project")
-	}
-	a.StageData = append(a.StageData, hash)
-	return a.Save()
 }
 
 // SaveContractHash saves a contract's hash in the database

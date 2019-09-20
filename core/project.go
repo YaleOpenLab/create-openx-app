@@ -27,9 +27,6 @@ type Project struct {
 	SeedInvestorMap      map[string]float64 // the list of all seed investors who've invested in the project
 	WaterfallMap         map[string]float64 // publickey:amount map in order to pay multiple accounts. A bit ugly, but should work fine. Make map before using
 	RecipientIndex       int                // The index of the project's recipient
-	OriginatorIndex      int                // the originator of the project
-	GuarantorIndex       int                // the person guaranteeing the specific project in question
-	ContractorIndex      int                // the person with the proposed contract
 	InvestorIndices      []int              // The various investors who have invested in the project
 	SeedInvestorIndices  []int              // Investors who took part before the contract was at stage 3
 	RecipientIndices     []int              // the indices of the recipient family (offtakers, beneficiaries, etc)
@@ -57,7 +54,6 @@ type Project struct {
 	UserFlaggedBy        []int              // the indices of the users who flagged the project
 	Reports              int                // the number of reports against htis particular project
 	BrokerUrl            string             // the url of the MQTT broker that is associated with the project
-	TellerPublishTopic   string             // the topic using which the publisher / subscriber must post / subscribe messages from
 	Metadata             string             // other metadata which does not have an explicit name can be stored here. Used to derive assetIDs
 	InterestRate         float64            // the rate of return for investors
 	OriginatorFee        float64            // fee paid to the originator included in the total value of the project
