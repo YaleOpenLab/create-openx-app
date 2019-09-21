@@ -5,8 +5,8 @@ import (
 	"os"
 
 	xlm "github.com/YaleOpenLab/openx/chains/xlm"
-	consts "github.com/org/plat/consts"
-	core "github.com/org/plat/core"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
+	core "github.com/YaleOpenLab/create-openx-app/.template/core"
 )
 
 // Mainnet loads the stuff needed for mainnet. Ordering is very important since some consts need the others

@@ -6,7 +6,7 @@ import (
 
 	edb "github.com/Varunram/essentials/database"
 
-	consts "github.com/org/plat/consts"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
 )
 
 // NewEntity creates a new entity

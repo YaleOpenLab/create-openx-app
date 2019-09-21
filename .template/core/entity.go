@@ -11,8 +11,8 @@ import (
 	wallet "github.com/YaleOpenLab/openx/chains/xlm/wallet"
 	openx "github.com/YaleOpenLab/openx/database"
 
-	consts "github.com/org/plat/consts"
-	notif "github.com/org/plat/notif"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
+	notif "github.com/YaleOpenLab/create-openx-app/.template/notif"
 )
 
 // Entity defines a common structure for contractors, developers and originators

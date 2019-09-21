@@ -6,7 +6,7 @@ import (
 	edb "github.com/Varunram/essentials/database"
 	"github.com/boltdb/bolt"
 
-	consts "github.com/org/plat/consts"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
 )
 
 // InvestorBucket is the investor bucket

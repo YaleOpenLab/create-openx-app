@@ -10,7 +10,7 @@ import (
 	openxconsts "github.com/YaleOpenLab/openx/consts"
 	openx "github.com/YaleOpenLab/openx/database"
 
-	consts "github.com/org/plat/consts"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
 )
 
 // Investor defines the investor structure

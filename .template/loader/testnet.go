@@ -9,8 +9,8 @@ import (
 	utils "github.com/Varunram/essentials/utils"
 	// openxconsts "github.com/YaleOpenLab/openx/consts"
 
-	consts "github.com/org/plat/consts"
-	core "github.com/org/plat/core"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
+	core "github.com/YaleOpenLab/create-openx-app/.template/core"
 )
 
 func testSolarProject(index int, panelsize string, totalValue float64, location string, moneyRaised float64,

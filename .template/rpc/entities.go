@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	erpc "github.com/Varunram/essentials/rpc"
-	core "github.com/org/plat/core"
+	core "github.com/YaleOpenLab/create-openx-app/.template/core"
 )
 
 // setupEntityRPCs sets up all entity related endpoints
