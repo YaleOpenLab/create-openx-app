@@ -10,7 +10,7 @@ import (
 	xlm "github.com/YaleOpenLab/openx/chains/xlm"
 	wallet "github.com/YaleOpenLab/openx/chains/xlm/wallet"
 
-	core "github.com/test/blah/core"
+	core "github.com/org/plat/core"
 )
 
 // setupRecipientRPCs sets up all RPCs related to the recipient

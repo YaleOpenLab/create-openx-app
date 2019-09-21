@@ -7,7 +7,7 @@ import (
 	erpc "github.com/Varunram/essentials/rpc"
 	utils "github.com/Varunram/essentials/utils"
 
-	core "github.com/test/blah/core"
+	core "github.com/org/plat/core"
 )
 
 // setupProjectRPCs sets up all project related RPC calls

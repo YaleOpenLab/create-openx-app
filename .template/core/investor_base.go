@@ -10,7 +10,7 @@ import (
 	openxconsts "github.com/YaleOpenLab/openx/consts"
 	openx "github.com/YaleOpenLab/openx/database"
 
-	consts "github.com/test/blah/consts"
+	consts "github.com/org/plat/consts"
 )
 
 // Investor defines the investor structure

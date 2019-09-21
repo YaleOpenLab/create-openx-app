@@ -13,8 +13,8 @@ import (
 	issuer "github.com/YaleOpenLab/openx/chains/xlm/issuer"
 	wallet "github.com/YaleOpenLab/openx/chains/xlm/wallet"
 
-	consts "github.com/test/blah/consts"
-	notif "github.com/test/blah/notif"
+	consts "github.com/org/plat/consts"
+	notif "github.com/org/plat/notif"
 )
 
 // MunibondInvest invests in a specific munibond

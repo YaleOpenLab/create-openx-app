@@ -6,7 +6,7 @@ import (
 
 	edb "github.com/Varunram/essentials/database"
 
-	consts "github.com/test/blah/consts"
+	consts "github.com/org/plat/consts"
 )
 
 // NewEntity creates a new entity

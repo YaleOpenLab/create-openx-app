@@ -8,7 +8,7 @@ import (
 	erpc "github.com/Varunram/essentials/rpc"
 	utils "github.com/Varunram/essentials/utils"
 	openx "github.com/YaleOpenLab/openx/database"
-	core "github.com/test/blah/core"
+	core "github.com/org/plat/core"
 )
 
 func setupAdminHandlers() {

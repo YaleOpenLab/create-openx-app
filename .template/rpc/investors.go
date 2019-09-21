@@ -11,8 +11,8 @@ import (
 	assets "github.com/YaleOpenLab/openx/chains/xlm/assets"
 	wallet "github.com/YaleOpenLab/openx/chains/xlm/wallet"
 
-	core "github.com/test/blah/core"
-	notif "github.com/test/blah/notif"
+	core "github.com/org/plat/core"
+	notif "github.com/org/plat/notif"
 )
 
 // setupInvestorRPCs sets up all investor related RPCs

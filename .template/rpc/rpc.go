@@ -8,7 +8,7 @@ import (
 
 	erpc "github.com/Varunram/essentials/rpc"
 	utils "github.com/Varunram/essentials/utils"
-	consts "github.com/test/blah/consts"
+	consts "github.com/org/plat/consts"
 )
 
 func checkReqdParams(w http.ResponseWriter, r *http.Request, options []string) error {
