@@ -11,10 +11,10 @@ import (
 	"github.com/spf13/viper"
 
 	erpc "github.com/Varunram/essentials/rpc"
-	consts "github.com/org/plat/consts"
-	core "github.com/org/plat/core"
-	loader "github.com/org/plat/loader"
-	rpc "github.com/org/plat/rpc"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
+	core "github.com/YaleOpenLab/create-openx-app/.template/core"
+	loader "github.com/YaleOpenLab/create-openx-app/.template/loader"
+	rpc "github.com/YaleOpenLab/create-openx-app/.template/rpc"
 
 	openxconsts "github.com/YaleOpenLab/openx/consts"
 	openxrpc "github.com/YaleOpenLab/openx/rpc"

@@ -7,7 +7,7 @@ import (
 	erpc "github.com/Varunram/essentials/rpc"
 	utils "github.com/Varunram/essentials/utils"
 
-	core "github.com/org/plat/core"
+	core "github.com/YaleOpenLab/create-openx-app/.template/core"
 )
 
 // setupStagesHandlers sets up all stage related handlers

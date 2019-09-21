@@ -8,7 +8,7 @@ import (
 	erpc "github.com/Varunram/essentials/rpc"
 	utils "github.com/Varunram/essentials/utils"
 	openx "github.com/YaleOpenLab/openx/database"
-	core "github.com/org/plat/core"
+	core "github.com/YaleOpenLab/create-openx-app/.template/core"
 	// openxrpc "github.com/YaleOpenLab/openx/rpc"
 )
 

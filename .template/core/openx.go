@@ -6,7 +6,7 @@ import (
 
 	erpc "github.com/Varunram/essentials/rpc"
 	utils "github.com/Varunram/essentials/utils"
-	consts "github.com/org/plat/consts"
+	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
 
 	openx "github.com/YaleOpenLab/openx/database"
 )
