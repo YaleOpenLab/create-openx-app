@@ -1,5 +1,7 @@
 package core
 
+// This file contains optional parameters that can be added on to the platform.
+
 // ChangeVotingBalance changes the voting balance of a user
 func (a *Investor) ChangeVotingBalance(votes float64) error {
 	// this function is caled when we want to refund the user with the votes once

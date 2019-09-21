@@ -5,7 +5,10 @@ import (
 	"log"
 )
 
-// SetOneTimeUnlock sets a one time seedpwd that can be used to automatically unlock the project once an investment comes in
+// This file contains optional parameters that can be added on to the platform.
+
+// SetOneTimeUnlock sets a one time seedpwd that can be used to automatically
+// unlock the project once an investment comes in
 func (a *Recipient) SetOneTimeUnlock(projIndex int, seedpwd string) error {
 	log.Println("setting one time unlock for project with index: ", projIndex)
 	project, err := RetrieveProject(projIndex)
