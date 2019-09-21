@@ -1,19 +1,8 @@
-# Generator script for opensolar like platforms
-
-# Find and replace YaleOpenLab/opensolar with the name desired - orgName / platform_name
-echo "Enter Organization Name: "
-read orgName
-echo "Enter Platform Name:"
-read repoName
-
-if [ -z "$orgName" ] ; then
-  echo "Empty string passed for org name, quitting"
-  exit
-fi
-
-if [ -z "$repoName" ] ; then
-  echo "Empty string passed for repo name, quitting"
-  exit
-fi
-
-find . -name '*.go' -print0 | xargs -0 sed -i "" "s,github.com/YaleOpenLab/opensolar,github.com/$orgName/$repoName,g"
+#!/bin/sh
+mkdir $1
+cp -r .template/* $1
+cd $1
+echo "Replacing YaleOpenLab/opensolar with $1/$2"
+find . -name '*.go' -print0 | xargs -0 sed -i "" "s,github.com/org/plat,github.com/$1/$2,g"
+cd ..
+echo $GOPATH
