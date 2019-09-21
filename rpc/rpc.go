@@ -113,8 +113,6 @@ func StartServer(portx int, insecure bool) {
 	setupRecipientRPCs()
 	setupPublicRoutes()
 	setupEntityRPCs()
-	setupParticleHandlers()
-	setupSwytchApis()
 	setupStagesHandlers()
 	setupAdminHandlers()
 

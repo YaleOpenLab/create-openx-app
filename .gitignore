@@ -3,4 +3,5 @@ server.crt
 server.key
 config.yaml
 legal/legal
-platform
+blah
+opensolar

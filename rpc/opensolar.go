@@ -8,7 +8,6 @@ import (
 	utils "github.com/Varunram/essentials/utils"
 
 	core "github.com/test/blah/core"
-	notif "github.com/test/blah/notif"
 )
 
 // setupProjectRPCs sets up all project related RPC calls
@@ -18,8 +17,6 @@ func setupProjectRPCs() {
 	getAllProjects()
 	getProjectsAtIndex()
 	addContractHash()
-	sendTellerShutdownEmail()
-	sendTellerFailedPaybackEmail()
 }
 
 var ProjRpc = map[int][]string{
@@ -28,8 +25,6 @@ var ProjRpc = map[int][]string{
 	3: []string{"/project/get", "index"},                                                       // GET
 	4: []string{"/projects", "index"},                                                          // GET
 	5: []string{"/utils/addhash", "projIndex", "choice", "choicestr"},                          // GET
-	6: []string{"/tellershutdown", "projIndex", "deviceId", "tx1", "tx2"},                      // GET
-	7: []string{"/tellerpayback", "deviceId", "projIndex"},                                     // GET
 }
 
 // insertProject inserts a project into the database.
@@ -257,50 +252,6 @@ func addContractHash() {
 			return
 		}
 
-		erpc.ResponseHandler(w, erpc.StatusOK)
-	})
-}
-
-// sendTellerShutdownEmail sends a teller shutdown email
-func sendTellerShutdownEmail() {
-	http.HandleFunc(UserRPC[6][0], func(w http.ResponseWriter, r *http.Request) {
-		err := erpc.CheckGet(w, r)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		prepUser, err := userValidateHelper(w, r, UserRPC[6][1:])
-		if err != nil {
-			return
-		}
-
-		projIndex := r.URL.Query()["projIndex"][0]
-		deviceId := r.URL.Query()["deviceId"][0]
-		tx1 := r.URL.Query()["tx1"][0]
-		tx2 := r.URL.Query()["tx2"][0]
-		notif.SendTellerShutdownEmail(prepUser.Email, projIndex, deviceId, tx1, tx2)
-		erpc.ResponseHandler(w, erpc.StatusOK)
-	})
-}
-
-// sendTellerFailedPaybackEmail sends a teller failed payback email
-func sendTellerFailedPaybackEmail() {
-	http.HandleFunc(UserRPC[7][0], func(w http.ResponseWriter, r *http.Request) {
-		err := erpc.CheckGet(w, r)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		prepUser, err := userValidateHelper(w, r, UserRPC[7][1:])
-		if err != nil {
-			return
-		}
-
-		projIndex := r.URL.Query()["projIndex"][0]
-		deviceId := r.URL.Query()["deviceId"][0]
-		notif.SendTellerPaymentFailedEmail(prepUser.Email, projIndex, deviceId)
 		erpc.ResponseHandler(w, erpc.StatusOK)
 	})
 }

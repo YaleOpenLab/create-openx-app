@@ -59,57 +59,6 @@ type Project struct {
 	OriginatorFee        float64            // fee paid to the originator included in the total value of the project
 }
 
-// ExplorePageSummaryHelper defines the params that will appear on the frontend's explore page
-type ExplorePageSummaryHelper struct {
-}
-
-// InvestmentHelper defines the investment specifics of the project
-type InvestmentHelper struct {
-	Capex              string
-	Hardware           float64
-	FirstLossEscrow    string
-	CertificationCosts string
-}
-
-// FinancialHelper defines the financial specifics of the project
-type FinancialHelper struct {
-	Return    float64
-	Insurance string
-	Tariff    string
-	Maturity  string
-}
-
-// ProjectSizeHelper defines size, storage and other params that are part of the project size section
-type ProjectSizeHelper struct {
-	PVSolar          string
-	Storage          string
-	Critical         float64
-	InverterCapacity string
-}
-
-// SustainabilityHelper defines parameters relevant to sustainability that ae important to the project
-type SustainabilityHelper struct {
-	CarbonDrawdown string
-	CommunityValue string
-	LCA            string
-}
-
-// Feedback defines a structure that can be used for providing feedback about entities
-type Feedback struct {
-	Content string
-	// the content of the feedback, good / bad
-	// maybe we could have a rating system baked in? a star based rating system?
-	// would be nice, idk
-	From Entity
-	// who gave the feedback?
-	To Entity
-	// regarding whom is this feedback about
-	Date string
-	// time at which this feedback was written
-	Contract []Project
-	// the contract regarding which this feedback is directed at
-}
-
 // Stage is the evolution of the erstwhile static stage integer construction
 type Stage struct {
 	Number          int
@@ -120,28 +69,9 @@ type Stage struct {
 	BreachCondition []string // define breach conditions for a particular stage
 }
 
-// ContractAuction is an auction struct
-type ContractAuction struct {
-	// TODO: this struct isn't used yet as it needs handlers and stuff, but when
-	// we move off main.go for testing, this must be used in order to make stuff
-	// easier for us.
-	AllContracts    []Project
-	AllContractors  []Entity
-	WinningContract Project
-}
-
 const (
 	// InvestorWeight is the percentage weight of the project's total reputation assigned to the investor
-	InvestorWeight = 0.1
-
-	// OriginatorWeight is the percentage weight of the project's total reputation assigned to the originator
-	OriginatorWeight = 0.1
-
-	// ContractorWeight is the percentage weight of the project's total reputation assigned to the contractor
-	ContractorWeight = 0.3
-
-	// DeveloperWeight is the percentage weight of the project's total reputation assigned to the developer
-	DeveloperWeight = 0.2
+	InvestorWeight = 0.7
 
 	// RecipientWeight is the percentage weight of the project's total reputation assigned to the recipient
 	RecipientWeight = 0.3
@@ -158,9 +88,6 @@ const (
 	// DisconnectionThreshold is the threshold above which the user gets a notification telling that services have been disconnected.
 	DisconnectionThreshold = 6
 )
-
-// SolarProjectArray is an array of Projects
-type SolarProjectArray []Project
 
 // InitializePlatform imports handlers from the main platform struct that are necessary for starting the platform
 func InitializePlatform() error {

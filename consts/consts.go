@@ -92,9 +92,6 @@ var LockInterval = int64(1 * 60 * 60 * 24 * 3)
 // OneHour is one hour in seconds
 var OneHour = time.Duration(1 * 60 * 60)
 
-// PaybackInterval is the default teller payback interval
-var PaybackInterval = time.Duration(1 * 60 * 60 * 24 * 30)
-
 // OneWeekInSecond is one week in seconds
 var OneWeekInSecond = time.Duration(604800 * time.Second)
 
@@ -107,26 +104,8 @@ var SixWeeksInSecond = time.Duration(3628800 * time.Second)
 // CutDownPeriod is the period where we cut down power to the recipient and instead redirect it to the grid
 var CutDownPeriod = time.Duration(4838400 * time.Second)
 
-// TellerHomeDir is the home directory of the teller
-var TellerHomeDir = HomeDir + "/teller" // the home directory of the teller executable
-
-// TellerMaxLocalStorageSize is the max file storage limit on the teller before we hash the entire thing to ipfs
-var TellerMaxLocalStorageSize = 2000
-
-// TellerPollInterval is the frequency at which we poll the interval
-var TellerPollInterval = time.Duration(3600 * 24 * time.Second)
-
-// LoginRefreshInterval is the frequency at which the teller's credentials are updated (ie if you change your password, wait 5 minutes for the teller to disconnect)
-var LoginRefreshInterval = time.Duration(5 * 60 * time.Second)
-
 // ProjectReportThreshold is the threshold above which admins are allowed to flag the project
 var ProjectReportThreshold = 10
-
-// TellerListenNum is the number of messages the mqtt client will listen for from the broker
-var TellerListenNum = 100
-
-// TellerQos is the quality of service that the mqtt client must expect. Set to 0 (worst). Goes up until 2
-var TellerQos = 0
 
 // SetTnConsts sets constants that are relevant for staring opensolar on testnet
 func SetTnConsts() {
