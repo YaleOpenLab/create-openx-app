@@ -24,6 +24,9 @@ else
   find . -name '*recipient_options.go' -exec rm "{}" \;
 fi
 
+cd notif
+find . -name '*.go' -print0 | xargs -0 sed -i "" "s,REPLACEME,$5,g"
+
 # cd ..
 # echo $GOPATH
 # mv $1 $GOPATH/
