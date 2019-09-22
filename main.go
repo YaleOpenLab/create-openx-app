@@ -23,6 +23,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Println("Enter the name that you would like to end emails as (eg: The Opensolar Platform)")
+	emailName, err := scan.ScanString()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Println("Would you like to have additional options for investors? (press n/N for no)")
 	invVote, err := scan.ScanString()
 	if err != nil {
@@ -53,7 +59,7 @@ func main() {
 	}
 
 	// trigger the gen script
-	cmd, err := exec.Command("./gen.sh", orgName, platformName, invVote, recpVote).Output()
+	cmd, err := exec.Command("./gen.sh", orgName, platformName, invVote, recpVote, emailName).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
