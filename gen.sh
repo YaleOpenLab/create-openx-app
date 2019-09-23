@@ -3,7 +3,7 @@
 mkdir $1
 cp -r .template/* $1
 cd $1
-echo "Replacing YaleOpenLab/opensolar with $1/$2"
+# echo "Replacing YaleOpenLab/opensolar with $1/$2"
 find . -name '*.go' -print0 | xargs -0 sed -i "" "s,github.com/YaleOpenLab/create-openx-app/.template,github.com/$1/$2,g"
 yes="y"
 
@@ -11,9 +11,12 @@ yes="y"
 
 if [ "$3" == "$yes" ] ; then
   echo "Adding extra options for investors"
+  cd core
+  rm investor.go
+  mv investor_voter.gotemp investor.go
 else
   echo "Deleting extra options for investors"
-  find . -name '*investor_options.go' -exec rm "{}" \;
+  find . -name '*investor_voter.gotemp' -exec rm "{}" \;
 fi
 
 if [ "$4" == "$yes" ] ; then
@@ -29,12 +32,13 @@ find . -name '*.go' -print0 | xargs -0 sed -i "" "s,REPLACEME,$5,g"
 cd ..
 
 if [ "$6" == "$yes" ] ; then
+  echo "Adding support for other blockchains"
+else
   echo "Omitting other blockchain handlers"
   cd core
   rm project.go contract.go
-  cp project_stellar.gotemp project.go
-  cp contract_stellar.gotemp contract.go
-  rm *.gotemp
+  mv project_stellar.gotemp project.go
+  mv contract_stellar.gotemp contract.go
 fi
 
 cd ..
