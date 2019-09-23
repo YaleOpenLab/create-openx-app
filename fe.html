@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <title>Openx Generator</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    body {
+        background: white;
+      }
+      * {
+        font-family: Helvetica, sans-serif;
+        text-align: center;
+      }
+      input {
+        font-size: 16px !important;
+      }
+</style>
+</head>
+
+<body>
+  <!-- partial:index.partial.html -->
+  <!-- partial -->
+  <h1>Welcome to the openx platform generator</h1>
+  <form action="http://localhost:8081/setup" method="post">
+    <input type="text" name="org" placeholder="Organization Name"><br>
+    <input type="text" name="platform" placeholder="Platform Name"><br>
+    <input type="text" name="emailentity" placeholder="Email Entity Name"><br><br>
+    <input type="checkbox" name="abl"> Support Non Stellar Blockchains<br>
+    <input type="checkbox" name="invo"> Add additional options for investors<br>
+    <input type="checkbox" name="recpo"> Add additional options for recipients<br><br>
+    <input type="submit" name="submit" />
+  </form>
+</body>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.3.0/css-doodle.min.js'></script>
+<script  src="./script.js"></script>
+<script>
+  document.body.addEventListener('click', function(e) {
+    e.target.update && e.target.update();
+  })
+</script>
+
+</html>

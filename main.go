@@ -7,11 +7,26 @@ import (
 	"os/exec"
 	// "bytes"
 	scan "github.com/Varunram/essentials/scan"
+	flags "github.com/jessevdk/go-flags"
 )
+
+var opts struct {
+	Listen bool `short:"l" description:"Start the generator script in rpc mode"`
+	Port   int  `short:"p" description:"The port on which the server runs on" default:"8081"`
+}
 
 func main() {
 	fmt.Printf("%s", "Welcome to create-openx-app\n\n")
 	fmt.Printf("%s", "All options are yes by default. Please press n/N for omitting specific options\n\n")
+
+	_, err := flags.ParseArgs(&opts, os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if opts.Listen {
+		StartServer(opts.Port)
+	}
 
 	fmt.Printf("%s", "Enter organization name: ")
 	orgName, err := scan.ScanString()
@@ -31,7 +46,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%s", "This template uses Stellar as the main blockchain platform but support" +
+	fmt.Printf("%s", "This template uses Stellar as the main blockchain platform but support"+
 		"for other blockchains will be added in the future. Do you want to add the other blockchain handlers? ")
 
 	otherBlHandlers, err := scan.ScanString()
