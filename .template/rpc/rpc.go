@@ -103,7 +103,7 @@ func relayRequest() {
 	})
 }
 
-// StartServer starts the opensolar backend server
+// StartServer starts the platfomr's backend server
 func StartServer(portx int, insecure bool) {
 	erpc.SetupPingHandler()
 	relayRequest()

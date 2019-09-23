@@ -15,7 +15,6 @@ type Project struct {
 	TotalValue           float64            // the total money that we need from investors
 	Lock                 bool               // lock investment in order to wait for recipient's confirmation
 	LockPwd              string             // the recipient's seedpwd. Will be set to null as soon as we use it.
-	Chain                string             // the chain on which the project desires to be.
 	OneTimeUnlock        string             // a one time unlock password where the recipient can store his seedpwd in (will be decrypted after investment)
 	AmountOwed           float64            // the amoutn owed to investors as a cumulative sum. Used in case of a breach
 	Reputation           float64            // the positive reputation associated with a given project

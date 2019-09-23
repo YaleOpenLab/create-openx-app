@@ -122,29 +122,24 @@ func preInvestmentCheck(projIndex int, invIndex int, invAmount float64, seed str
 		return project, errors.New("this proejct has been flagged by an admin. Please wait for their further action before proceeding")
 	}
 
-	// the checks till here are common for all chains. The stuff following this is exclusive to stellar.
-	if project.Chain == "stellar" || project.Chain == "" {
-		if project.SeedAssetCode == "" && project.InvestorAssetCode == "" {
-			// this project does not have an asset issuer associated with it yet since there has been
-			// no seed round nor investment round
-			project.InvestorAssetCode = assets.AssetID(consts.InvestorAssetPrefix + project.Metadata) // creat investor asset
-			err = project.Save()
-			if err != nil {
-				return project, errors.Wrap(err, "couldn't save project")
-			}
-			err = issuer.InitIssuer(consts.PlatformIssuerDir, projIndex, consts.IssuerSeedPwd) // start an issuer with the projIndex
-			if err != nil {
-				return project, errors.Wrap(err, "error while initializing issuer")
-			}
-			err = issuer.FundIssuer(consts.PlatformIssuerDir, projIndex, consts.IssuerSeedPwd, consts.PlatformSeed) // fund the issuer since it needs to issue assets
-			if err != nil {
-				return project, errors.Wrap(err, "error while funding issuer")
-			}
+	if project.SeedAssetCode == "" && project.InvestorAssetCode == "" {
+		// this project does not have an asset issuer associated with it yet since there has been
+		// no seed round nor investment round
+		project.InvestorAssetCode = assets.AssetID(consts.InvestorAssetPrefix + project.Metadata) // creat investor asset
+		err = project.Save()
+		if err != nil {
+			return project, errors.Wrap(err, "couldn't save project")
 		}
-		return project, nil
-	} else {
-		return project, errors.Wrap(err, "chain not supported, quitting")
+		err = issuer.InitIssuer(consts.PlatformIssuerDir, projIndex, consts.IssuerSeedPwd) // start an issuer with the projIndex
+		if err != nil {
+			return project, errors.Wrap(err, "error while initializing issuer")
+		}
+		err = issuer.FundIssuer(consts.PlatformIssuerDir, projIndex, consts.IssuerSeedPwd, consts.PlatformSeed) // fund the issuer since it needs to issue assets
+		if err != nil {
+			return project, errors.Wrap(err, "error while funding issuer")
+		}
 	}
+	return project, nil
 }
 
 // SeedInvest is the seed investment function of the platform
@@ -167,26 +162,22 @@ func SeedInvest(projIndex int, invIndex int, invAmount float64, invSeed string) 
 		return errors.New("you can't invest more than what the seed investment cap permits you to, quitting")
 	}
 
-	if project.Chain == "stellar" || project.Chain == "" {
-		if project.SeedAssetCode == "" {
-			log.Println("assigning a seed asset code")
-			project.SeedAssetCode = "SEEDASSET" // set this to a constant asset for now
-		}
-		err = MunibondInvest(consts.PlatformIssuerDir, invIndex, invSeed, invAmount, projIndex,
-			project.SeedAssetCode, project.TotalValue, project.SeedInvestmentFactor, true)
-		if err != nil {
-			return errors.Wrap(err, "error while investing")
-		}
-
-		err = project.updateAfterInvestment(invAmount, invIndex, true)
-		if err != nil {
-			return errors.Wrap(err, "couldn't update project after investment")
-		}
-
-		return err
+	if project.SeedAssetCode == "" {
+		log.Println("assigning a seed asset code")
+		project.SeedAssetCode = "SEEDASSET" // set this to a constant asset for now
+	}
+	err = MunibondInvest(consts.PlatformIssuerDir, invIndex, invSeed, invAmount, projIndex,
+		project.SeedAssetCode, project.TotalValue, project.SeedInvestmentFactor, true)
+	if err != nil {
+		return errors.Wrap(err, "error while investing")
 	}
 
-	return errors.New("other chain investments not supported  yet")
+	err = project.updateAfterInvestment(invAmount, invIndex, true)
+	if err != nil {
+		return errors.Wrap(err, "couldn't update project after investment")
+	}
+
+	return err
 }
 
 // Invest is the main invest function of the platform
@@ -203,28 +194,26 @@ func Invest(projIndex int, invIndex int, invAmount float64, invSeed string) erro
 		return errors.New("other investment models are not supported right now, quitting")
 	}
 
-	if project.Chain == "stellar" || project.Chain == "" {
-		if project.Stage != 4 {
-			if project.Stage == 1 || project.Stage == 2 {
-				// investment is in seed stage
-				return SeedInvest(projIndex, invIndex, invAmount, invSeed)
-			}
-			return errors.New("project not at stage where it can solicit investment, quitting")
+	if project.Stage != 4 {
+		if project.Stage == 1 || project.Stage == 2 {
+			// investment is in seed stage
+			return SeedInvest(projIndex, invIndex, invAmount, invSeed)
 		}
-
-		err = MunibondInvest(consts.PlatformIssuerDir, invIndex, invSeed, invAmount, projIndex,
-			project.InvestorAssetCode, project.TotalValue, 1, false)
-		if err != nil {
-			return errors.Wrap(err, "error while investing")
-		}
-
-		// once the investment is complete, update the project and store in the database
-		err = project.updateAfterInvestment(invAmount, invIndex, false)
-		if err != nil {
-			return errors.Wrap(err, "failed to update project after investment")
-		}
-		return err
+		return errors.New("project not at stage where it can solicit investment, quitting")
 	}
+
+	err = MunibondInvest(consts.PlatformIssuerDir, invIndex, invSeed, invAmount, projIndex,
+		project.InvestorAssetCode, project.TotalValue, 1, false)
+	if err != nil {
+		return errors.Wrap(err, "error while investing")
+	}
+
+	// once the investment is complete, update the project and store in the database
+	err = project.updateAfterInvestment(invAmount, invIndex, false)
+	if err != nil {
+		return errors.Wrap(err, "failed to update project after investment")
+	}
+	return err
 
 	return errors.New("other chain investments not supported right now")
 }

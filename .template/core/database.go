@@ -23,7 +23,7 @@ var EntityBucket = []byte("Contractors")
 
 // CreateHomeDir creates a home directory
 func CreateHomeDir() {
-	edb.CreateDirs(consts.HomeDir, consts.DbDir, consts.OpenSolarIssuerDir)
+	edb.CreateDirs(consts.HomeDir, consts.DbDir, consts.PlatformIssuerDir)
 	log.Println("creating db at: ", consts.DbDir+consts.DbName)
 	db, err := edb.CreateDB(consts.DbDir+consts.DbName, ProjectsBucket, InvestorBucket, RecipientBucket, EntityBucket)
 	if err != nil {

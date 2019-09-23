@@ -41,23 +41,23 @@ var AnchorAPI string
 // Mainnet denotes if openx is running on Stellar mainnet / testnet
 var Mainnet bool
 
-// OpenxURL is the openx URL that opensolar has to connect to
+// OpenxURL is the openx URL that the platform has to connect to
 var OpenxURL = "http://localhost:8080"
 
 // TopSecretCode is a test nuclear code that is used for testing
 var TopSecretCode = "OPENSOLARTEST"
 
-// HomeDir is the directory where opensolar projects, investors, entities, etc are stored
-var HomeDir = os.Getenv("HOME") + "/.opensolar"
+// HomeDir is the directory where projects, investors, entities, etc are stored
+var HomeDir = os.Getenv("HOME") + "/.platform"
 
 // DbDir is the directory where the openx database (boltDB) is stored
 var DbDir = ""
 
 // DbName is the name of the openx database
-var DbName = "opensolar.db"
+var DbName = "platform.db"
 
-// OpenSolarIssuerDir is the directory where project escrow seeds are stored
-var OpenSolarIssuerDir = ""
+// PlatformIssuerDir is the directory where project escrow seeds are stored
+var PlatformIssuerDir = ""
 
 // PlatformSeedFile is the location where PlatformSeedFile is stored and decrypted each time the platform is started
 var PlatformSeedFile string
@@ -107,18 +107,18 @@ var CutDownPeriod = time.Duration(4838400 * time.Second)
 // ProjectReportThreshold is the threshold above which admins are allowed to flag the project
 var ProjectReportThreshold = 10
 
-// SetTnConsts sets constants that are relevant for staring opensolar on testnet
+// SetTnConsts sets constants that are relevant for staring the platform on testnet
 func SetTnConsts() {
-	HomeDir = os.Getenv("HOME") + "/.opensolar/testnet"
+	HomeDir = os.Getenv("HOME") + "/.platform/testnet"
 	DbDir = HomeDir + "/database/"                   // the directory where the database is stored (project info, user info, etc)
-	OpenSolarIssuerDir = HomeDir + "/projects/"      // the directory where we store opensolar projects' issuer seeds
+	PlatformIssuerDir = HomeDir + "/projects/"      // the directory where we store projects' issuer seeds
 	PlatformSeedFile = HomeDir + "/platformseed.hex" // where the platform's seed is stored
 }
 
-// SetMnConsts sets constants that are relevant for staring opensolar on mainnet // THIS IS UNUSED
+// SetMnConsts sets constants that are relevant for staring the platform on mainnet // THIS IS UNUSED
 func SetMnConsts() {
-	HomeDir = os.Getenv("HOME") + "/.opensolar/mainnet"
+	HomeDir = os.Getenv("HOME") + "/.platform/mainnet"
 	DbDir = HomeDir + "/database/"                   // the directory where the database is stored (project info, user info, etc)
-	OpenSolarIssuerDir = HomeDir + "/projects/"      // the directory where we store opensolar projects' issuer seeds
+	PlatformIssuerDir = HomeDir + "/projects/"      // the directory where we store projects' issuer seeds
 	PlatformSeedFile = HomeDir + "/platformseed.hex" // where the platform's seed is stored
 }
