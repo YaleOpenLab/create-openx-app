@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -9,23 +10,29 @@ import (
 )
 
 func main() {
-	log.Println("welcome to create-openx-app")
+	fmt.Printf("%s", "Welcome to create-openx-app\n\n")
+	fmt.Printf("%s", "All options are yes by default. Please press n/N for omitting specific options\n\n")
 
-	log.Println("Enter organization name: ")
+	fmt.Printf("%s", "Enter organization name: ")
 	orgName, err := scan.ScanString()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("Enter platform name: ")
+	fmt.Printf("%s", "Enter platform name: ")
 	platformName, err := scan.ScanString()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("This template uses Stellar as the main blockchain platform but support" +
-		"for other blockchains will be added in the future. Do you want to keep the other blockchain handlers? " +
-		"(default: yes, press n/N for no)")
+	fmt.Printf("%s", "Enter the entity that you would like to send emails as: ")
+	emailName, err := scan.ScanString()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%s", "This template uses Stellar as the main blockchain platform but support" +
+		"for other blockchains will be added in the future. Do you want to add the other blockchain handlers? ")
 
 	otherBlHandlers, err := scan.ScanString()
 	if err != nil {
@@ -33,48 +40,46 @@ func main() {
 	}
 
 	if otherBlHandlers == "n" || otherBlHandlers == "N" {
+		otherBlHandlers = "n"
+	} else {
 		otherBlHandlers = "y"
 	}
 
-	log.Println("Enter the name that you would like to end emails as (eg: The Opensolar Platform)")
-	emailName, err := scan.ScanString()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Would you like to have additional options for investors? (press n/N for no)")
+	fmt.Printf("%s", "Would you like to have voting options for investors? ")
 	invVote, err := scan.ScanString()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	if invVote == "n" || invVote == "N" {
-		log.Println("you have requested for investors not to have the option to vote towards projects")
+		invVote = "n"
 	} else {
 		invVote = "y"
 	}
 
-	log.Println("Would you like to have additional options for recipients? (press n/N for no)")
+	fmt.Printf("%s", "Would you like to have additional options for recipients? ")
 	recpVote, err := scan.ScanString()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	if recpVote == "n" || recpVote == "N" {
-		log.Println("you have requested for recipients not to have the option to vote towards projects")
+		recpVote = "n"
 	} else {
 		recpVote = "y"
 	}
 
 	if platformName == "" || orgName == "" {
-		log.Println("platform name or org name empty, quitting")
+		fmt.Printf("%s", "platform name or org name empty, quitting")
 		os.Exit(1)
 	}
 
+	fmt.Printf("%s", "\n\nRUNNING GENERATOR SCRIPT..\n\n")
 	// trigger the gen script
 	cmd, err := exec.Command("./gen.sh", orgName, platformName, invVote, recpVote, emailName, otherBlHandlers).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("replaced names", string(cmd))
+
+	fmt.Println(string(cmd))
 }
