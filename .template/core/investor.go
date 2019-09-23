@@ -24,13 +24,13 @@ type Investor struct {
 	// AmountInvested is the total amount invested by the investor
 	AmountInvested float64
 
-	// InvestedProjects is a list of the investor assets of the opensolar projects the investor has invested in
+	// InvestedProjects is a list of the investor assets of the projects the investor has invested in
 	InvestedProjects []string
 
 	// InvestedProjectsIndices is an integer list of the projects the investor has invested in
 	InvestedProjectsIndices []int
 
-	// InvestedProjects is a list of the investor assets of the opensolar projects the investor has invested in
+	// InvestedProjects is a list of the investor assets of the projects the investor has invested in
 	SeedInvestedProjects []string
 
 	// InvestedProjectsIndices is an integer list of the projects the investor has invested in

@@ -16,7 +16,7 @@ import (
 	notif "github.com/YaleOpenLab/create-openx-app/.template/notif"
 )
 
-// contains one of the two main contracts behind opensolar
+// contains one of the two main contracts behind the platform
 
 // VerifyBeforeAuthorizing verifies information on the originator before upgrading the project stage
 func VerifyBeforeAuthorizing(projIndex int) bool {
@@ -85,7 +85,7 @@ func VoteTowardsProposedProject(invIndex int, votes float64, projectIndex int) e
 	return nil
 }
 
-// preInvestmentCheck associated with the opensolar platform when an Investor bids an investment amount of a specific project
+// preInvestmentCheck associated with the platform when an Investor bids an investment amount of a specific project
 func preInvestmentCheck(projIndex int, invIndex int, invAmount float64, seed string) (Project, error) {
 	var project Project
 	var investor Investor
@@ -132,24 +132,22 @@ func preInvestmentCheck(projIndex int, invIndex int, invAmount float64, seed str
 			if err != nil {
 				return project, errors.Wrap(err, "couldn't save project")
 			}
-			err = issuer.InitIssuer(consts.OpenSolarIssuerDir, projIndex, consts.IssuerSeedPwd) // start an issuer with the projIndex
+			err = issuer.InitIssuer(consts.PlatformIssuerDir, projIndex, consts.IssuerSeedPwd) // start an issuer with the projIndex
 			if err != nil {
 				return project, errors.Wrap(err, "error while initializing issuer")
 			}
-			err = issuer.FundIssuer(consts.OpenSolarIssuerDir, projIndex, consts.IssuerSeedPwd, consts.PlatformSeed) // fund the issuer since it needs to issue assets
+			err = issuer.FundIssuer(consts.PlatformIssuerDir, projIndex, consts.IssuerSeedPwd, consts.PlatformSeed) // fund the issuer since it needs to issue assets
 			if err != nil {
 				return project, errors.Wrap(err, "error while funding issuer")
 			}
 		}
 		return project, nil
-	} else if project.Chain == "algorand" {
-		return project, errors.Wrap(err, "algorand investments not supported yet, quitting")
 	} else {
 		return project, errors.Wrap(err, "chain not supported, quitting")
 	}
 }
 
-// SeedInvest is the seed investment function of the opensolar platform
+// SeedInvest is the seed investment function of the platform
 func SeedInvest(projIndex int, invIndex int, invAmount float64, invSeed string) error {
 
 	project, err := preInvestmentCheck(projIndex, invIndex, invAmount, invSeed)
@@ -174,7 +172,7 @@ func SeedInvest(projIndex int, invIndex int, invAmount float64, invSeed string) 
 			log.Println("assigning a seed asset code")
 			project.SeedAssetCode = "SEEDASSET" // set this to a constant asset for now
 		}
-		err = MunibondInvest(consts.OpenSolarIssuerDir, invIndex, invSeed, invAmount, projIndex,
+		err = MunibondInvest(consts.PlatformIssuerDir, invIndex, invSeed, invAmount, projIndex,
 			project.SeedAssetCode, project.TotalValue, project.SeedInvestmentFactor, true)
 		if err != nil {
 			return errors.Wrap(err, "error while investing")
@@ -191,7 +189,7 @@ func SeedInvest(projIndex int, invIndex int, invAmount float64, invSeed string) 
 	return errors.New("other chain investments not supported  yet")
 }
 
-// Invest is the main invest function of the opensolar platform
+// Invest is the main invest function of the platform
 func Invest(projIndex int, invIndex int, invAmount float64, invSeed string) error {
 	var err error
 
@@ -214,7 +212,7 @@ func Invest(projIndex int, invIndex int, invAmount float64, invSeed string) erro
 			return errors.New("project not at stage where it can solicit investment, quitting")
 		}
 
-		err = MunibondInvest(consts.OpenSolarIssuerDir, invIndex, invSeed, invAmount, projIndex,
+		err = MunibondInvest(consts.PlatformIssuerDir, invIndex, invSeed, invAmount, projIndex,
 			project.InvestorAssetCode, project.TotalValue, 1, false)
 		if err != nil {
 			return errors.Wrap(err, "error while investing")
@@ -368,7 +366,7 @@ func UnlockProject(username string, pwhash string, projIndex int, seedpwd string
 }
 
 // sendRecipientAssets sends a recipient the debt asset and the payback asset associated with
-// the opensolar platform
+// the platform
 func sendRecipientAssets(projIndex int) error {
 	startTime := utils.Unix()
 	project, err := RetrieveProject(projIndex)
@@ -431,7 +429,7 @@ func sendRecipientAssets(projIndex int) error {
 	project.PaybackAssetCode = assets.AssetID(consts.PaybackAssetPrefix + project.Metadata)
 
 	// when sending debt and payback assets, account for SeedMoneyRaised
-	err = MunibondReceive(consts.OpenSolarIssuerDir, project.RecipientIndex, projIndex, project.DebtAssetCode,
+	err = MunibondReceive(consts.PlatformIssuerDir, project.RecipientIndex, projIndex, project.DebtAssetCode,
 		project.PaybackAssetCode, project.EstimatedAcquisition, recpSeed, project.TotalValue+project.SeedMoneyRaised, project.PaybackPeriod)
 	if err != nil {
 		return errors.Wrap(err, "error while receiving assets from issuer on recipient's end")
@@ -477,7 +475,7 @@ func Payback(recpIndex int, projIndex int, assetName string, amount float64, rec
 		return errors.New("other investment models are not supported right now, quitting")
 	}
 
-	pct, err := MunibondPayback(consts.OpenSolarIssuerDir, recpIndex, amount,
+	pct, err := MunibondPayback(consts.PlatformIssuerDir, recpIndex, amount,
 		recipientSeed, projIndex, assetName, project.InvestorIndices, project.TotalValue, project.EscrowPubkey)
 	if err != nil {
 		return errors.Wrap(err, "Error while paying back the issuer")

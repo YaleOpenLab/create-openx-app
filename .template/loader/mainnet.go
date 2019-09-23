@@ -14,7 +14,7 @@ import (
 func Mainnet() error {
 	consts.HomeDir += "/mainnet"
 	consts.DbDir = consts.HomeDir + "/database/"
-	consts.OpenSolarIssuerDir = consts.HomeDir + "/projects/"
+	consts.PlatformIssuerDir = consts.HomeDir + "/projects/"
 	consts.PlatformSeedFile = consts.HomeDir + "/platformseed.hex"
 	xlm.SetConsts(0, consts.Mainnet)
 

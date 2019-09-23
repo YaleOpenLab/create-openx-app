@@ -5,7 +5,7 @@ import (
 	platforms "github.com/YaleOpenLab/openx/platforms"
 )
 
-// Project defines the project investment structure in opensolar
+// Project defines the project investment structure of the platform
 type Project struct {
 	// The project is split into two parts - parts which are used in the smart contract and parts which are not
 	// we define them as critparams and noncritparams

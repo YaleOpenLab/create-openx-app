@@ -22,7 +22,7 @@ func setupRecipientRPCs() {
 	chooseBlindAuction()
 	chooseVickreyAuction()
 	chooseTimeAuction()
-	unlockOpenSolar()
+	unlockProject()
 	addEmail()
 	finalizeProject()
 	originateProject()
@@ -39,7 +39,7 @@ var RecpRPC = map[int][]string{
 	8:  []string{"/recipient/auction/choose/blind"},                                   // GET
 	9:  []string{"/recipient/auction/choose/vickrey"},                                 // GET
 	10: []string{"/recipient/auction/choose/time"},                                    // GET
-	11: []string{"/recipient/unlock/opensolar", "seedpwd", "projIndex"},               // POST
+	11: []string{"/recipient/unlock/project", "seedpwd", "projIndex"},                 // POST
 	12: []string{"/recipient/addemail", "email"},                                      // POST
 	13: []string{"/recipient/finalize", "projIndex"},                                  // POST
 	14: []string{"/recipient/originate", "projIndex"},                                 // POST
@@ -350,9 +350,9 @@ func chooseTimeAuction() {
 	})
 }
 
-// unlockOpenSolar unlocks a project which has just been invested in, signalling that the recipient
+// unlockProject unlocks a project which has just been invested in, signalling that the recipient
 // has accepted the investment.
-func unlockOpenSolar() {
+func unlockProject() {
 	http.HandleFunc(RecpRPC[11][0], func(w http.ResponseWriter, r *http.Request) {
 		err := erpc.CheckPost(w, r)
 		if err != nil {

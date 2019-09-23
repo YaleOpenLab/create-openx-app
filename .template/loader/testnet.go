@@ -47,7 +47,7 @@ func testSolarProject(index int, panelsize string, totalValue float64, location 
 func Testnet() error {
 	consts.HomeDir += "/testnet"
 	consts.DbDir = consts.HomeDir + "/database/"                   // the directory where the database is stored (project info, user info, etc)
-	consts.OpenSolarIssuerDir = consts.HomeDir + "/projects/"      // the directory where we store opensolar projects' issuer seeds
+	consts.PlatformIssuerDir = consts.HomeDir + "/projects/"      // the directory where we store projects' issuer seeds
 	consts.PlatformSeedFile = consts.HomeDir + "/platformseed.hex" // where the platform's seed is stored
 
 	if _, err := os.Stat(consts.HomeDir); os.IsNotExist(err) {

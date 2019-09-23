@@ -165,13 +165,13 @@ func reportProject() {
 
 // validateParams is a struct used fro validating user params
 type validateParams struct {
-	// Role is a string identifying the user on the pilot opensolar platform
+	// Role is a string identifying the user on the platform
 	Role string
 	// Entity is an interface containing the user struct
 	Entity interface{}
 }
 
-// userInfo validates a user and returns whether the user is an investor or recipient on the opensolar platform
+// userInfo validates a user and returns whether the user is an investor or recipient on the platform
 func userInfo() {
 	http.HandleFunc(UserRPC[3][0], func(w http.ResponseWriter, r *http.Request) {
 		err := erpc.CheckGet(w, r)

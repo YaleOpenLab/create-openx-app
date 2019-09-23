@@ -23,7 +23,7 @@ var StagesRPC = map[int][]string{
 	3: []string{"/stages/promote"},
 }
 
-// returnAllStages returns all the defined stages for this specific platform.  Opensolar
+// returnAllStages returns all the defined stages for this specific platform. This platform
 // has 9 stages defined in stages.go
 func returnAllStages() {
 	http.HandleFunc(StagesRPC[1][0], func(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +41,7 @@ func returnAllStages() {
 	})
 }
 
-// returnSpecificStage returns details on a specific stage defined in the opensolar platform
+// returnSpecificStage returns details on a specific stage defined in the platform
 func returnSpecificStage() {
 	http.HandleFunc(StagesRPC[2][0], func(w http.ResponseWriter, r *http.Request) {
 		err := erpc.CheckGet(w, r)
@@ -90,7 +90,7 @@ func returnSpecificStage() {
 	})
 }
 
-// promoteStage returns details on a specific stage defined in the opensolar platform
+// promoteStage returns details on a specific stage defined in the platform
 func promoteStage() {
 	http.HandleFunc(StagesRPC[3][0], func(w http.ResponseWriter, r *http.Request) {
 		err := erpc.CheckGet(w, r)
