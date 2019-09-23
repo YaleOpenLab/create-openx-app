@@ -5,19 +5,19 @@ cp -r .template/* $1
 cd $1
 echo "Replacing YaleOpenLab/opensolar with $1/$2"
 find . -name '*.go' -print0 | xargs -0 sed -i "" "s,github.com/YaleOpenLab/create-openx-app/.template,github.com/$1/$2,g"
-investor="investor"
-recipient="recipient"
+yes="y"
 
-echo $3, $4
+# echo $3, $4, $6
 
-if [ "$3" == "$investor" ] ; then
+if [ "$3" == "$yes" ] ; then
   echo "Adding extra options for investors"
 else
   echo "Deleting extra options for investors"
   find . -name '*investor_options.go' -exec rm "{}" \;
 fi
 
-if [ "$4" == "$recipient" ] ; then
+if [ "$4" == "$yes" ] ; then
+  # ie the person wants to not omit the handlers
   echo "Adding extra options for recipients"
 else
   echo "Deleting extra options for recipients"
@@ -26,7 +26,18 @@ fi
 
 cd notif
 find . -name '*.go' -print0 | xargs -0 sed -i "" "s,REPLACEME,$5,g"
+cd ..
 
+if [ "$6" == "$yes" ] ; then
+  echo "Omitting other blockchain handlers"
+  cd core
+  rm project.go contract.go
+  cp project_stellar.gotemp project.go
+  cp contract_stellar.gotemp contract.go
+  rm *.gotemp
+fi
+
+cd ..
 # cd ..
 # echo $GOPATH
 # mv $1 $GOPATH/

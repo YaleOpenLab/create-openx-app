@@ -23,6 +23,19 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Println("This template uses Stellar as the main blockchain platform but support" +
+		"for other blockchains will be added in the future. Do you want to keep the other blockchain handlers? " +
+		"(default: yes, press n/N for no)")
+
+	otherBlHandlers, err := scan.ScanString()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if otherBlHandlers == "n" || otherBlHandlers == "N" {
+		otherBlHandlers = "y"
+	}
+
 	log.Println("Enter the name that you would like to end emails as (eg: The Opensolar Platform)")
 	emailName, err := scan.ScanString()
 	if err != nil {
@@ -38,7 +51,7 @@ func main() {
 	if invVote == "n" || invVote == "N" {
 		log.Println("you have requested for investors not to have the option to vote towards projects")
 	} else {
-		invVote = "investor"
+		invVote = "y"
 	}
 
 	log.Println("Would you like to have additional options for recipients? (press n/N for no)")
@@ -50,7 +63,7 @@ func main() {
 	if recpVote == "n" || recpVote == "N" {
 		log.Println("you have requested for recipients not to have the option to vote towards projects")
 	} else {
-		recpVote = "recipient"
+		recpVote = "y"
 	}
 
 	if platformName == "" || orgName == "" {
@@ -59,7 +72,7 @@ func main() {
 	}
 
 	// trigger the gen script
-	cmd, err := exec.Command("./gen.sh", orgName, platformName, invVote, recpVote, emailName).Output()
+	cmd, err := exec.Command("./gen.sh", orgName, platformName, invVote, recpVote, emailName, otherBlHandlers).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
