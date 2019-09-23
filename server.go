@@ -24,6 +24,38 @@ func triggerScript() {
 		invo := r.FormValue("invo")               // investor options
 		recpo := r.FormValue("recpo")             // recipient options
 
+		if org == "" {
+			org = "org"
+		}
+
+		if len(org) > 2 {
+			org = org[0] // avoid deadling with parsing multi word GitHub imports
+		}
+
+		if platform == "" {
+			platform = "plat"
+		}
+
+		if len(platform) > 2 {
+			platform = platform[0]
+		}
+
+		if emailentity == "" {
+			emailentity = "The Plat"
+		}
+
+		if abl == "" {
+			abl = "y"
+		}
+
+		if invo == "" {
+			invo = "y"
+		}
+
+		if recpo == "" {
+			recpo = "y"
+		}
+
 		cmd, err := exec.Command("./gen.sh", org, platform, invo, recpo, emailentity, abl).Output()
 		if err != nil {
 			log.Fatal(err)
