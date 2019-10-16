@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	xlm "github.com/YaleOpenLab/openx/chains/xlm"
+	xlm "github.com/Varunram/essentials/xlm"
 	consts "github.com/YaleOpenLab/create-openx-app/.template/consts"
 	core "github.com/YaleOpenLab/create-openx-app/.template/core"
 )
